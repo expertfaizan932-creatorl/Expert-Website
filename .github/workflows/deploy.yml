@@ -59,89 +59,118 @@ jobs:
             exit 1
           }
 
+      - name: Probe available credentials
+        env:
+          SERVER_KEY: ${{ secrets.SERVER_KEY || vars.SERVER_KEY }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY || vars.SECRET_KEY }}
+          ACCESS_KEY: ${{ secrets.ACCESS_KEY || vars.ACCESS_KEY }}
+          SSH_KEY: ${{ secrets.SSH_KEY || vars.SSH_KEY }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY || vars.PRIVATE_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY || vars.SSH_PRIVATE_KEY }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY || vars.DEPLOY_KEY }}
+          HOST: ${{ secrets.HOST || vars.HOST }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST || vars.SERVER_HOST }}
+          SERVER_IP: ${{ secrets.SERVER_IP || vars.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER || vars.SERVER_USER }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD || vars.SERVER_PASSWORD }}
+          PASSWORD: ${{ secrets.PASSWORD || vars.PASSWORD }}
+          SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE || vars.SSH_PASSPHRASE }}
+          USERNAME: ${{ secrets.USERNAME || vars.USERNAME }}
+          TOKEN: ${{ secrets.TOKEN || vars.TOKEN }}
+        run: |
+          set -uo pipefail
+          REPORT=""
+          for n in SERVER_KEY SECRET_KEY ACCESS_KEY SSH_KEY PRIVATE_KEY SSH_PRIVATE_KEY DEPLOY_KEY HOST SERVER_HOST SERVER_IP SERVER_USER SERVER_PASSWORD PASSWORD SSH_PASSPHRASE USERNAME TOKEN; do
+            eval "v=\${$n:-}"
+            if [ -z "$v" ]; then
+              REPORT="$REPORT | $n=MISSING"
+              continue
+            fi
+            fmt="other-text"
+            if printf '%s' "$v" | grep -q "BEGIN .*PRIVATE KEY"; then fmt="openssh-private-key"
+            elif printf '%s' "$v" | grep -q "BEGIN .*PUBLIC KEY"; then fmt="public-key"
+            elif printf '%s' "$v" | grep -q "PuTTY-User-Key-File"; then fmt="putty-ppk"
+            elif printf '%s' "$v" | grep -Eq '^([A-Za-z0-9._-]+@)?[A-Za-z0-9.-]+$'; then fmt="host-or-token"
+            fi
+            REPORT="$REPORT | $n=len:${#v},$fmt"
+            echo "$n: length=${#v} format=$fmt"
+          done
+          echo "Credential inventory (no values printed):$REPORT"
+          echo "::notice::Inventory:$REPORT"
+
       - name: Resolve server credentials
         id: cred
         env:
-          SERVER_KEY: ${{ secrets.SERVER_KEY || secrets.server_key || vars.SERVER_KEY || vars.server_key }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY || secrets.secret_key || vars.SECRET_KEY || vars.secret_key }}
-          ACCESS_KEY: ${{ secrets.ACCESS_KEY || secrets.access_key || vars.ACCESS_KEY || vars.access_key }}
-          SERVER_KEY_SRC: ${{ secrets.SERVER_KEY != '' && 'secret' || vars.SERVER_KEY != '' && 'variable' || 'missing' }}
-          SECRET_KEY_SRC: ${{ secrets.SECRET_KEY != '' && 'secret' || vars.SECRET_KEY != '' && 'variable' || 'missing' }}
-          ACCESS_KEY_SRC: ${{ secrets.ACCESS_KEY != '' && 'secret' || vars.ACCESS_KEY != '' && 'variable' || 'missing' }}
+          SERVER_KEY: ${{ secrets.SERVER_KEY || vars.SERVER_KEY }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY || vars.SECRET_KEY }}
+          ACCESS_KEY: ${{ secrets.ACCESS_KEY || vars.ACCESS_KEY }}
+          SSH_KEY: ${{ secrets.SSH_KEY || vars.SSH_KEY }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY || vars.PRIVATE_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY || vars.SSH_PRIVATE_KEY }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY || vars.DEPLOY_KEY }}
+          HOST_CAND: ${{ secrets.HOST || vars.HOST }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST || vars.SERVER_HOST }}
+          SERVER_IP: ${{ secrets.SERVER_IP || vars.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER || vars.SERVER_USER }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD || vars.SERVER_PASSWORD }}
+          PASSWORD: ${{ secrets.PASSWORD || vars.PASSWORD }}
+          SSH_PASSPHRASE: ${{ secrets.SSH_PASSPHRASE || vars.SSH_PASSPHRASE }}
+          USERNAME: ${{ secrets.USERNAME || vars.USERNAME }}
         run: |
           set -euo pipefail
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
 
-          # --- non-sensitive diagnostics: source, length, format (koi value print nahi)
-          for n in SERVER_KEY SECRET_KEY ACCESS_KEY; do
-            eval "v=\${$n:-}"
-            eval "src=\${${n}_SRC:-unknown}"
-            len=${#v}
-            fmt="empty"
-            if [ "$len" -gt 0 ]; then
-              if printf '%s' "$v" | grep -q "BEGIN .*PRIVATE KEY"; then fmt="openssh-private-key"
-              elif printf '%s' "$v" | grep -q "BEGIN .*PUBLIC KEY"; then fmt="public-key"
-              elif printf '%s' "$v" | grep -q "PuTTY-User-Key-File"; then fmt="putty-ppk"
-              elif printf '%s' "$v" | grep -Eq '^([A-Za-z0-9._-]+@)?[A-Za-z0-9.-]+$'; then fmt="host-or-single-token"
-              else fmt="other-text"
-              fi
-            fi
-            echo "::notice::$n: source=$src length=$len format=$fmt"
-          done
-
-          # --- find the SSH private key (any secret that looks like a PEM key)
+          # --- key: pehla value jo PEM private key ho
           KEY=""
-          for v in "$SERVER_KEY" "$SECRET_KEY" "$ACCESS_KEY"; do
-            if printf '%s' "$v" | grep -q "BEGIN .*PRIVATE KEY"; then
-              KEY="$v"
-              break
+          for v in "${SSH_PRIVATE_KEY:-}" "${PRIVATE_KEY:-}" "${SSH_KEY:-}" "${DEPLOY_KEY:-}" "${SERVER_KEY:-}" "${SECRET_KEY:-}" "${ACCESS_KEY:-}"; do
+            if [ -n "$v" ] && printf '%s' "$v" | grep -q "BEGIN .*PRIVATE KEY"; then
+              KEY="$v"; break
             fi
           done
           if [ -z "$KEY" ]; then
-            echo "::error::Koi bhi SSH private key nahi mili. Upar diye gaye format me se koi 'openssh-private-key' hona chahiye (-----BEGIN OPENSSH PRIVATE KEY-----). PuTTY .ppk ko ssh-keygen se convert karke lagayein."
+            echo "::error::SSH private key nahi mili. Repo > Settings > Secrets ki list me key naam par 'openssh-private-key' format ki value chahiye."
             exit 1
           fi
           printf '%s\n' "$KEY" > ~/.ssh/id_deploy
           chmod 600 ~/.ssh/id_deploy
 
-          # --- find the host (something like root@1.2.3.4 or 1.2.3.4 or server.com)
+          # --- host: pehli value jo server address ho (user@host ya host)
           HOST=""
-          for v in "$ACCESS_KEY" "$SERVER_KEY" "$SECRET_KEY"; do
+          for v in "${SERVER_HOST:-}" "${HOST_CAND:-}" "${SERVER_IP:-}" "${ACCESS_KEY:-}" "${SERVER_KEY:-}" "${SECRET_KEY:-}"; do
             [ -z "$v" ] && continue
             if printf '%s' "$v" | grep -Eq '^([A-Za-z0-9._-]+@)?[A-Za-z0-9.-]+$' \
               && printf '%s' "$v" | grep -Eq '[@.]' \
-              && [ "${#v}" -lt 120 ]; then
-              HOST="$v"
-              break
+              && [ "${#v}" -lt 120 ] \
+              && [ "$v" != "$KEY" ]; then
+              HOST="$v"; break
             fi
           done
           if [ -z "$HOST" ]; then
-            echo "::error::Host nahi mila. ACCESS_KEY me root@SERVER_IP ya SERVER_IP rakhein."
+            echo "::error::Server ka host/IP nahi mila. SERVER_HOST (ya HOST) secret me root@1.2.3.4 rakhein."
             exit 1
           fi
 
-          # username: host ke andar ho to woh, warna SSH_USER / root
           case "$HOST" in
             *@*) USER="${HOST%%@*}"; HOST_ONLY="${HOST#*@}" ;;
-            *)   USER="${SSH_USER}"; HOST_ONLY="$HOST" ;;
+            *)   USER="${SERVER_USER:-${SSH_USER:-root}}"; HOST_ONLY="$HOST" ;;
           esac
 
-          # --- key passphrase check: pehle khali, phir baaki secrets
+          # --- key passphrase: pehle khali, phir baaki values
           if ssh-keygen -y -f ~/.ssh/id_deploy -P "" >/dev/null 2>&1; then
             PASSPHRASE_OK="none"
           else
             PASSPHRASE_OK=""
-            for v in "$SECRET_KEY" "$ACCESS_KEY" "$SERVER_KEY"; do
+            for v in "${SSH_PASSPHRASE:-}" "${SECRET_KEY:-}" "${SERVER_PASSWORD:-}" "${PASSWORD:-}" "${ACCESS_KEY:-}"; do
               [ -z "$v" ] && continue
-              if printf '%s' "$v" | grep -q "BEGIN .*PRIVATE KEY"; then continue; fi
+              [ "$v" = "$KEY" ] && continue
+              [ "$v" = "$HOST" ] && continue
               if ssh-keygen -y -f ~/.ssh/id_deploy -P "$v" >/dev/null 2>&1; then
-                PASSPHRASE_OK="$v"
-                break
+                PASSPHRASE_OK="$v"; break
               fi
             done
             if [ -z "$PASSPHRASE_OK" ]; then
-              echo "::error::SSH key unlock nahi hui (khali passphrase aur secrets tino try kiye)."
+              echo "::error::SSH key unlock nahi hui. Key passphrase (SSH_PASSPHRASE) ya galat key check karein."
               exit 1
             fi
           fi
