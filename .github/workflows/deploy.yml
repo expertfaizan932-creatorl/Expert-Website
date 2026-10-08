@@ -62,13 +62,33 @@ jobs:
       - name: Resolve server credentials
         id: cred
         env:
-          SERVER_KEY: ${{ secrets.SERVER_KEY }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
+          SERVER_KEY: ${{ secrets.SERVER_KEY || secrets.server_key || vars.SERVER_KEY || vars.server_key }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY || secrets.secret_key || vars.SECRET_KEY || vars.secret_key }}
+          ACCESS_KEY: ${{ secrets.ACCESS_KEY || secrets.access_key || vars.ACCESS_KEY || vars.access_key }}
+          SERVER_KEY_SRC: ${{ secrets.SERVER_KEY != '' && 'secret' || vars.SERVER_KEY != '' && 'variable' || 'missing' }}
+          SECRET_KEY_SRC: ${{ secrets.SECRET_KEY != '' && 'secret' || vars.SECRET_KEY != '' && 'variable' || 'missing' }}
+          ACCESS_KEY_SRC: ${{ secrets.ACCESS_KEY != '' && 'secret' || vars.ACCESS_KEY != '' && 'variable' || 'missing' }}
         run: |
           set -euo pipefail
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
+
+          # --- non-sensitive diagnostics: source, length, format (koi value print nahi)
+          for n in SERVER_KEY SECRET_KEY ACCESS_KEY; do
+            eval "v=\${$n:-}"
+            eval "src=\${${n}_SRC:-unknown}"
+            len=${#v}
+            fmt="empty"
+            if [ "$len" -gt 0 ]; then
+              if printf '%s' "$v" | grep -q "BEGIN .*PRIVATE KEY"; then fmt="openssh-private-key"
+              elif printf '%s' "$v" | grep -q "BEGIN .*PUBLIC KEY"; then fmt="public-key"
+              elif printf '%s' "$v" | grep -q "PuTTY-User-Key-File"; then fmt="putty-ppk"
+              elif printf '%s' "$v" | grep -Eq '^([A-Za-z0-9._-]+@)?[A-Za-z0-9.-]+$'; then fmt="host-or-single-token"
+              else fmt="other-text"
+              fi
+            fi
+            echo "::notice::$n: source=$src length=$len format=$fmt"
+          done
 
           # --- find the SSH private key (any secret that looks like a PEM key)
           KEY=""
@@ -79,7 +99,7 @@ jobs:
             fi
           done
           if [ -z "$KEY" ]; then
-            echo "::error::SERVER_KEY / SECRET_KEY / ACCESS_KEY me se koi bhi SSH private key nahi mila (-----BEGIN ... PRIVATE KEY-----)."
+            echo "::error::Koi bhi SSH private key nahi mili. Upar diye gaye format me se koi 'openssh-private-key' hona chahiye (-----BEGIN OPENSSH PRIVATE KEY-----). PuTTY .ppk ko ssh-keygen se convert karke lagayein."
             exit 1
           fi
           printf '%s\n' "$KEY" > ~/.ssh/id_deploy
