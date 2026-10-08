@@ -27,13 +27,37 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
-      - name: Install & build
+      - name: Environment info
         run: |
-          npm ci --no-audit --no-fund
-          npm run build
+          node -v
+          npm -v
+          git --version
+          df -h /
+
+      - name: Install dependencies
+        run: |
+          set -o pipefail
+          npm ci --no-audit --no-fund 2>&1 | tee "$RUNNER_TEMP/npm-ci.log" || {
+            echo "npm ci failed — last lines:"
+            tail -n 25 "$RUNNER_TEMP/npm-ci.log"
+            tail -n 6 "$RUNNER_TEMP/npm-ci.log" | sed 's|^|::error::ci: |'
+            { echo "### npm ci failed"; echo '```'; tail -n 25 "$RUNNER_TEMP/npm-ci.log"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          }
+
+      - name: Build
+        run: |
+          set -o pipefail
+          npm run build 2>&1 | tee "$RUNNER_TEMP/build.log" || {
+            echo "build failed — last lines:"
+            tail -n 30 "$RUNNER_TEMP/build.log"
+            tail -n 8 "$RUNNER_TEMP/build.log" | sed 's|^|::error::build: |'
+            { echo "### next build failed"; echo '```'; tail -n 30 "$RUNNER_TEMP/build.log"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          }
 
       - name: Resolve server credentials
         id: cred
