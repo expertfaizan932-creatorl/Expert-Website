@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getAreas, getSettings } from "@/lib/queries";
 import { ContactForm } from "@/components/ContactForm";
-import { Eyebrow, SectionHead } from "@/components/ui";
+import { Eyebrow, SectionHead, WhatsAppIcon, MailIcon } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -31,15 +31,29 @@ export default function ContactPage() {
           <aside className="space-y-4 lg:col-span-5">
             {[
               ["Office hours", s.hours],
+              ["Email", s.email],
               ["Address", s.address],
               ["Phone", s.phone],
-              ["Email", s.email],
             ].map(([k, v]) => (
               <div key={k} className="card-light p-5">
                 <h2 className="font-label text-[11px] uppercase tracking-[0.16em] text-steel">
                   {k}
                 </h2>
-                <p className="mt-2 text-[15px] text-ink">{v}</p>
+                <p className="mt-2 flex items-center gap-2 text-[15px] text-ink">
+                  {k === "Email" && <MailIcon className="h-[18px] w-[18px] text-gold" />}
+                  {k === "Phone" && (
+                    <a
+                      href={`https://wa.me/${s.whatsapp}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Chat on WhatsApp"
+                      className="text-wa transition-colors hover:text-wa/80"
+                    >
+                      <WhatsAppIcon className="h-[18px] w-[18px]" />
+                    </a>
+                  )}
+                  {v}
+                </p>
               </div>
             ))}
             <a

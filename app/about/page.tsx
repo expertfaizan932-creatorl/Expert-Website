@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAreas, getSettings, getStats } from "@/lib/queries";
-import { Eyebrow, SectionHead } from "@/components/ui";
+import { Eyebrow, SectionHead, WhatsAppIcon, MailIcon } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "About",
@@ -359,13 +359,25 @@ export default function AboutPage() {
                 <span className="mr-2 text-gold">🕒</span>
                 {settings.hours}
               </li>
-              <li>
-                <span className="mr-2 text-gold">📞</span>
-                {settings.phone}
+              <li className="flex items-center gap-2">
+                <MailIcon className="h-[18px] w-[18px] text-gold" />
+                <a href={`mailto:${settings.email}`} className="hover:text-gold">
+                  {settings.email}
+                </a>
               </li>
-              <li>
-                <span className="mr-2 text-gold">✉️</span>
-                {settings.email}
+              <li className="flex items-center gap-2">
+                <a
+                  href={`https://wa.me/${settings.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Chat on WhatsApp"
+                  className="text-wa transition-colors hover:text-wa/80"
+                >
+                  <WhatsAppIcon className="h-[18px] w-[18px]" />
+                </a>
+                <a href={`tel:${settings.phone.replace(/\s/g, "")}`} className="hover:text-gold">
+                  {settings.phone}
+                </a>
               </li>
             </ul>
           </div>

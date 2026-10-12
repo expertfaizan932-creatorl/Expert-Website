@@ -14,8 +14,8 @@
   --color-steel: #5a6775;
   --color-wa: #25d366;
 
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-display: "Big Shoulders Display", "Arial Narrow", Arial, sans-serif;
+  --font-sans: "Montserrat", system-ui, sans-serif;
+  --font-display: "Montserrat", system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   --shadow-card: 0 8px 24px rgba(16, 24, 38, 0.06);
@@ -53,13 +53,13 @@ body {
 }
 
 .font-display {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-weight: 800;
   letter-spacing: 0.02em;
 }
 
 .font-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 
 .site-container {

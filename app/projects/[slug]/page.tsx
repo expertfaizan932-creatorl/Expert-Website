@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProject, getProjects, getSettings } from "@/lib/queries";
 import { ContactForm } from "@/components/ContactForm";
-import { Eyebrow } from "@/components/ui";
+import { Eyebrow, WhatsAppIcon } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -89,7 +89,23 @@ export default async function ProjectDetailPage({
               </h2>
               <p className="mt-2 text-[15px] text-body">
                 Tell us your plot size and we&apos;ll send an indicative range, then a written BOQ
-                after the site visit. Call {settings.phone} or leave your details.
+                after the site visit. Call{" "}
+                <a
+                  href={`https://wa.me/${settings.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Chat on WhatsApp"
+                  className="mr-1.5 inline-flex translate-y-0.5 text-wa transition-colors hover:text-wa/80"
+                >
+                  <WhatsAppIcon className="h-[18px] w-[18px]" />
+                </a>
+                <a
+                  href={`tel:${settings.phone.replace(/\s/g, "")}`}
+                  className="font-semibold text-navy hover:text-gold"
+                >
+                  {settings.phone}
+                </a>{" "}
+                or leave your details.
               </p>
               <div className="mt-5">
                 <ContactForm compact areas={[{ slug: project.area_slug, name: project.area_name }]} />

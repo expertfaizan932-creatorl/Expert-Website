@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { WhatsAppIcon } from "./ui";
 
 export type NavService = { slug: string; title: string; group: string };
 export type NavArea = { slug: string; name: string; city: string };
@@ -57,10 +58,14 @@ export function HeaderClient({
   services,
   areas,
   resources,
+  phone,
+  whatsapp,
 }: {
   services: NavService[];
   areas: NavArea[];
   resources: NavResource[];
+  phone: string;
+  whatsapp: string;
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -85,9 +90,9 @@ export function HeaderClient({
               priority
               className="h-10 w-auto sm:h-11"
             />
-            <span className="hidden font-display text-lg uppercase leading-none text-navy md:block xl:text-xl">
+            <span className="hidden font-sans text-lg font-bold uppercase leading-none text-navy md:block xl:text-xl">
               Expert Marketing
-              <span className="mt-0.5 block font-label text-[8px] font-medium tracking-[0.24em] text-navy/60 xl:text-[9px]">
+              <span className="mt-0.5 block font-label text-[10px] font-medium tracking-[0.24em] text-navy/60 xl:text-[11px]">
                 &amp; DEVELOPERS
               </span>
             </span>
@@ -337,12 +342,23 @@ export function HeaderClient({
           </nav>
 
           <div className="flex items-center gap-3">
-            <a
-              href="tel:03345555372"
-              className="hidden border-l border-ink/15 pl-5 font-label text-[13px] tracking-[0.1em] whitespace-nowrap text-ink/80 transition-colors hover:text-gold 2xl:block"
-            >
-              03345555372
-            </a>
+            <div className="hidden items-center gap-2 border-l border-ink/15 pl-5 2xl:flex">
+              <a
+                href={`https://wa.me/${whatsapp}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Chat on WhatsApp"
+                className="text-wa transition-colors hover:text-wa/80"
+              >
+                <WhatsAppIcon className="h-[18px] w-[18px]" />
+              </a>
+              <a
+                href={`tel:${phone.replace(/\s/g, "")}`}
+                className="font-label text-[13px] tracking-[0.1em] whitespace-nowrap text-ink/80 transition-colors hover:text-gold"
+              >
+                {phone}
+              </a>
+            </div>
             <Link
               href="/cost-calculator"
               className="gold-glow inline-flex min-h-[44px] items-center justify-center whitespace-nowrap rounded-[12px] bg-gold px-4 py-2.5 text-sm font-semibold text-navy-deep transition-colors hover:bg-gold-soft"

@@ -1,4 +1,4 @@
-import { getAreas, getResources, getServices } from "@/lib/queries";
+import { getAreas, getResources, getServices, getSettings } from "@/lib/queries";
 import { HeaderClient, type NavArea, type NavResource, type NavService } from "./HeaderClient";
 
 const GROUPS: Record<string, string> = {
@@ -31,5 +31,15 @@ export function Header() {
     category: r.category,
   }));
 
-  return <HeaderClient services={services} areas={areas} resources={resources} />;
+  const settings = getSettings();
+
+  return (
+    <HeaderClient
+      services={services}
+      areas={areas}
+      resources={resources}
+      phone={settings.phone}
+      whatsapp={settings.whatsapp}
+    />
+  );
 }

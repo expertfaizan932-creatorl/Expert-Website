@@ -2,7 +2,7 @@ import { getSettings } from "@/lib/queries";
 
 export function WhatsAppButton() {
   const s = getSettings();
-  const wa = s.whatsapp?.replace(/\D/g, "") ?? "923345555372";
+  const wa = s.whatsapp?.replace(/\D/g, "") ?? "923125170194";
 
   return (
     <a

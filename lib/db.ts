@@ -427,11 +427,11 @@ function seed(db: Database.Database) {
     const settings: [string, string][] = [
       ["company_name", "Expert Marketing & Developers"],
       ["tagline", "Build with documentation, supervision and milestones you can inspect."],
-      ["phone", "03345555372"],
-      ["email", "ruamna38@gmail.com"],
-      ["address", "Office 21, Main Boulevard, Sector G-11, Islamabad"],
+      ["phone", "+92 312 5170194"],
+      ["email", "buildersexpert42@gmail.com"],
+      ["address", "1st floor Abdul Majeed Plaza Main Chakri Road Near Punjab College, Rawalpindi, Pakistan, 46000"],
       ["hours", "09:00 AM - 07:00 PM (Monday To Sunday On Only Friday OFF)"],
-      ["whatsapp", "923345555372"],
+      ["whatsapp", "923125170194"],
     ];
     settings.forEach((s) => insertSetting.run(...s));
   });
