@@ -359,7 +359,12 @@ export default function AboutPage() {
               </li>
               <li className="flex items-center gap-2">
                 <MailIcon className="h-[18px] w-[18px] text-gold" />
-                <a href={`mailto:${settings.email}`} className="hover:text-gold">
+                <a
+                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${settings.email}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gold"
+                >
                   {settings.email}
                 </a>
               </li>

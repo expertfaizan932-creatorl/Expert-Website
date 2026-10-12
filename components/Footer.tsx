@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getAreas, getSettings } from "@/lib/queries";
-import { WhatsAppIcon, MailIcon } from "./ui";
+import { WhatsAppIcon, GmailIcon } from "./ui";
 
 const cols: { title: string; links: { href: string; label: string }[] }[] = [
   {
@@ -145,8 +145,13 @@ export function Footer() {
                 <span className="mr-2 text-gold">🕒</span>
                 {s.hours}
               </p>
-              <a href={`mailto:${s.email}`} className="flex items-center gap-2 hover:text-gold">
-                <MailIcon className="h-[18px] w-[18px] text-gold" />
+              <a
+                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${s.email}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-gold"
+              >
+                <GmailIcon className="h-[18px] w-[18px] text-gold" />
                 {s.email}
               </a>
               <span className="flex items-center gap-2">
@@ -221,7 +226,7 @@ export function Footer() {
             © {new Date().getFullYear()} Expert Marketing &amp; Developers
           </p>
           <p className="text-[13px] text-white/60">
-            Demo project — inspired-by clone built for learning purposes.
+            Created by HIFI Marketing &amp; Technology
           </p>
         </div>
       </div>

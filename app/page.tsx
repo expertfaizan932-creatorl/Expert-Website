@@ -25,12 +25,12 @@ const showcaseColumns: { title: string; items: string[]; note?: string }[] = [
   {
     title: "All Our Pakistan",
     items: [
-      "300+ plot has been sale in pakistan",
-      "B17 30+ plot hass been sale",
-      "2to3 House has been sale",
-      "1to2 apartment has been sale",
-      "CDA sector ITEL 9to10 plot has been sale",
-      "G13 ma 2to3 House has been sale",
+      "300+ plot has been sold in pakistan",
+      "B17 30+ plot hass been sold",
+      "2to3 House has been sold",
+      "1to2 apartment has been sold",
+      "CDA sector I-10 9to10 plot has been sold",
+      "G13 ma 2to3 House has been sold",
     ],
   },
   {
@@ -452,7 +452,12 @@ export default function HomePage() {
               </li>
               <li className="flex items-center gap-2">
                 <MailIcon className="h-[18px] w-[18px] text-gold" />
-                <a href={`mailto:${settings.email}`} className="hover:text-gold">
+                <a
+                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${settings.email}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gold"
+                >
                   {settings.email}
                 </a>
               </li>

@@ -26,6 +26,17 @@ export function MailIcon({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
+export function GmailIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" aria-hidden="true" className={className}>
+      <path
+        fill="currentColor"
+        d="M45 12.298V37a3 3 0 0 1-3 3h-7V18.7L24 27.45 13 18.7V40H6a3 3 0 0 1-3-3V12.298A4.298 4.298 0 0 1 9.876 8.859L24 19.45 38.124 8.859A4.298 4.298 0 0 1 45 12.298Z"
+      />
+    </svg>
+  );
+}
+
 export function Eyebrow({
   children,
   variant = "light",
