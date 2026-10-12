@@ -5,8 +5,6 @@ import { getArea, getAreas, getProjectsByArea } from "@/lib/queries";
 import { ContactForm } from "@/components/ContactForm";
 import { Eyebrow } from "@/components/ui";
 
-export const dynamic = "force-dynamic";
-
 export function generateStaticParams() {
   return getAreas().map((a) => ({ slug: a.slug }));
 }

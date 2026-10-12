@@ -10,8 +10,6 @@ import {
 import { ContactForm } from "@/components/ContactForm";
 import { Eyebrow, SectionHead, WhatsAppIcon, MailIcon } from "@/components/ui";
 
-export const dynamic = "force-dynamic";
-
 const iconMap: Record<string, string> = {
   layers: "◫",
   key: "🔑",

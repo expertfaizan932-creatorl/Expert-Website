@@ -19,7 +19,7 @@ export function ContactForm({ areas = [] }: { areas?: FormArea[]; compact?: bool
     const data = Object.fromEntries(new FormData(form).entries());
     setStatus("loading");
     try {
-      const res = await fetch("/api/leads", {
+      const res = await fetch("/api/leads.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

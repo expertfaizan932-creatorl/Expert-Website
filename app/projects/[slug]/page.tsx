@@ -5,8 +5,6 @@ import { getProject, getProjects, getSettings } from "@/lib/queries";
 import { ContactForm } from "@/components/ContactForm";
 import { Eyebrow, WhatsAppIcon } from "@/components/ui";
 
-export const dynamic = "force-dynamic";
-
 export function generateStaticParams() {
   return getProjects().map((p) => ({ slug: p.slug }));
 }

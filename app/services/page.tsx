@@ -9,8 +9,6 @@ export const metadata: Metadata = {
     "Grey structure, turnkey, semi-finished, luxury, renovation, design drawings and property services.",
 };
 
-export const dynamic = "force-dynamic";
-
 export default function ServicesPage() {
   const services = getServices();
 

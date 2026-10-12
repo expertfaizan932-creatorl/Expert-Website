@@ -5,8 +5,6 @@ import { getProjects, getService, getServices } from "@/lib/queries";
 import { ContactForm } from "@/components/ContactForm";
 import { Eyebrow } from "@/components/ui";
 
-export const dynamic = "force-dynamic";
-
 export function generateStaticParams() {
   return getServices().map((s) => ({ slug: s.slug }));
 }

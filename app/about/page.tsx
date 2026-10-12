@@ -9,8 +9,6 @@ export const metadata: Metadata = {
     "A PEC-registered construction team in Islamabad and Rawalpindi building on written scope and engineering supervision.",
 };
 
-export const dynamic = "force-dynamic";
-
 const aboutNav: [string, string][] = [
   ["Who We Are", "#who-we-are"],
   ["Our Mission", "#mission"],

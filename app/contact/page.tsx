@@ -8,8 +8,6 @@ export const metadata: Metadata = {
   description: "Request a consultation for construction, design or property services.",
 };
 
-export const dynamic = "force-dynamic";
-
 export default function ContactPage() {
   const s = getSettings();
   const areas = getAreas();

@@ -9,8 +9,6 @@ export const metadata: Metadata = {
     "Cost guides, checklists, templates and tools for planning a construction project in Pakistan.",
 };
 
-export const dynamic = "force-dynamic";
-
 const ORDER = ["Tools", "Planning", "Templates", "Overseas"];
 
 export default function ResourcesPage() {

@@ -8,8 +8,6 @@ export const metadata: Metadata = {
   description: "Completed and ongoing construction projects across Islamabad and Rawalpindi.",
 };
 
-export const dynamic = "force-dynamic";
-
 export default function ProjectsPage() {
   const projects = getProjects();
 

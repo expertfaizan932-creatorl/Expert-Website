@@ -8,8 +8,6 @@ export const metadata: Metadata = {
   description: "Construction services across Islamabad, Rawalpindi and surrounding societies.",
 };
 
-export const dynamic = "force-dynamic";
-
 export default function AreasPage() {
   const areas = getAreas();
 
