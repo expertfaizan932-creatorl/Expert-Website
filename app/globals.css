@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-navy: #0b2553;
-  --color-navy-deep: #071a3d;
-  --color-navy-mid: #123067;
+  --color-navy: #0b58a0;
+  --color-navy-deep: #07325a;
+  --color-navy-mid: #1a6fc4;
   --color-gold: #fdb900;
   --color-gold-soft: #ffd666;
   --color-gold-dark: #8a5a00;
@@ -19,7 +19,7 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   --shadow-card: 0 8px 24px rgba(16, 24, 38, 0.06);
-  --shadow-card-hover: 0 20px 60px rgba(11, 37, 83, 0.12);
+  --shadow-card-hover: 0 20px 60px rgba(11, 88, 160, 0.12);
   --shadow-gold: 0 0 0 1px rgba(253, 185, 0, 0.22), 0 18px 60px rgba(253, 185, 0, 0.22);
   --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
@@ -134,9 +134,9 @@ body {
 .hero-radial {
   background: radial-gradient(
     1200px 600px at 20% 10%,
-    rgba(18, 48, 103, 0.65) 0,
-    rgba(7, 26, 61, 0.92) 55%,
-    #071a3d 100%
+    rgba(26, 111, 196, 0.65) 0,
+    rgba(7, 50, 90, 0.92) 55%,
+    #07325a 100%
   );
 }
 

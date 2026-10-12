@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   getAreas,
@@ -65,20 +66,16 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="noise relative overflow-hidden bg-navy-deep text-white">
-        <div className="hero-radial pointer-events-none absolute inset-0 opacity-35" />
-        <div className="blueprint-grid pointer-events-none absolute inset-0 opacity-[0.28]" />
-        <div
-          className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] md:block"
-          style={{
-            maskImage: "linear-gradient(to right, transparent 0%, black 38%)",
-            WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 38%)",
-          }}
-        >
-          <div className="h-full w-full bg-gradient-to-br from-navy-mid via-navy to-navy-deep opacity-70" />
-        </div>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-navy-deep from-[28%] via-navy-deep/70 via-[46%] to-transparent" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-deep/85 via-transparent to-navy-deep/30" />
+      <section className="noise relative overflow-hidden bg-black text-white">
+        <Image
+          src="/images/hero-property.jpg"
+          alt="Modern home built by Expert Marketing & Developers"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
 
         <div className="site-container relative flex flex-col justify-center pb-24 pt-20 md:min-h-[min(88vh,760px)] md:pb-24 md:pt-24">
           <div className="max-w-[34rem]">

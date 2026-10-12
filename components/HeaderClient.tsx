@@ -98,14 +98,13 @@ export function HeaderClient({
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-4 lg:flex xl:gap-5">
-            {/* Home / Projects / Calculator */}
+          <nav className="hidden items-center gap-2 xl:flex">
             {topNav.map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
                 data-active={pathname === n.href}
-                className={`nav-link font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors xl:text-[13px] ${
+                className={`nav-link font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors ${
                   pathname === n.href ? "text-gold" : "text-ink hover:text-gold"
                 }`}
               >
@@ -118,7 +117,7 @@ export function HeaderClient({
               <button
                 type="button"
                 data-active={pathname.startsWith("/projects") || pathname.startsWith("/areas")}
-                className={`nav-link flex items-center gap-1.5 font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors xl:text-[13px] ${
+                className={`nav-link flex items-center gap-1.5 font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors ${
                   pathname.startsWith("/projects") || pathname.startsWith("/areas")
                     ? "text-gold"
                     : "text-ink hover:text-gold"
@@ -145,7 +144,7 @@ export function HeaderClient({
               <button
                 type="button"
                 data-active={pathname.startsWith("/areas")}
-                className={`nav-link flex items-center gap-1.5 font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors xl:text-[13px] ${
+                className={`nav-link flex items-center gap-1.5 font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors ${
                   pathname.startsWith("/areas") ? "text-gold" : "text-ink hover:text-gold"
                 }`}
               >
@@ -181,7 +180,7 @@ export function HeaderClient({
               <button
                 type="button"
                 data-active={pathname.startsWith("/resources")}
-                className={`nav-link flex items-center gap-1.5 font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors xl:text-[13px] ${
+                className={`nav-link flex items-center gap-1.5 font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors ${
                   pathname.startsWith("/resources")
                     ? "text-gold"
                     : "text-ink hover:text-gold"
@@ -250,7 +249,7 @@ export function HeaderClient({
               <button
                 type="button"
                 data-active={pathname.startsWith("/services")}
-                className={`nav-link flex items-center gap-1.5 font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors xl:text-[13px] ${
+                className={`nav-link flex items-center gap-1.5 font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors ${
                   pathname.startsWith("/services")
                     ? "text-gold"
                     : "text-ink hover:text-gold"
@@ -296,7 +295,7 @@ export function HeaderClient({
             <Link
               href="/contact"
               data-active={pathname === "/contact"}
-              className={`nav-link font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors xl:text-[13px] ${
+              className={`nav-link font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors ${
                 pathname === "/contact" ? "text-gold" : "text-ink hover:text-gold"
               }`}
             >
@@ -308,7 +307,7 @@ export function HeaderClient({
               <button
                 type="button"
                 data-active={pathname.startsWith("/about") || pathname.startsWith("/contact")}
-                className={`nav-link flex items-center gap-1.5 font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors xl:text-[13px] ${
+                className={`nav-link flex items-center gap-1.5 font-label text-[12px] font-medium uppercase tracking-[0.14em] transition-colors ${
                   pathname.startsWith("/about") || pathname.startsWith("/contact")
                     ? "text-gold"
                     : "text-ink hover:text-gold"
@@ -341,8 +340,8 @@ export function HeaderClient({
             </div>
           </nav>
 
-          <div className="flex items-center gap-3">
-            <div className="hidden items-center gap-2 border-l border-ink/15 pl-5 2xl:flex">
+          <div className="flex items-center gap-1.5 sm:gap-3">
+            <div className="hidden items-center gap-2 border-l border-ink/15 pl-4 2xl:flex">
               <a
                 href={`https://wa.me/${whatsapp}`}
                 target="_blank"
@@ -354,14 +353,14 @@ export function HeaderClient({
               </a>
               <a
                 href={`tel:${phone.replace(/\s/g, "")}`}
-                className="font-label text-[13px] tracking-[0.1em] whitespace-nowrap text-ink/80 transition-colors hover:text-gold"
+                className="font-label text-[12px] tracking-[0.1em] whitespace-nowrap text-ink/80 transition-colors hover:text-gold"
               >
                 {phone}
               </a>
             </div>
             <Link
               href="/cost-calculator"
-              className="gold-glow inline-flex min-h-[44px] items-center justify-center whitespace-nowrap rounded-[12px] bg-gold px-4 py-2.5 text-sm font-semibold text-navy-deep transition-colors hover:bg-gold-soft"
+              className="gold-glow inline-flex min-h-[38px] shrink-0 items-center justify-center whitespace-nowrap rounded-[10px] bg-gold px-2.5 py-2 text-[11px] font-semibold text-navy-deep transition-colors hover:bg-gold-soft sm:px-3 sm:text-[11px]"
             >
               Get Free Consultation
             </Link>
@@ -369,7 +368,7 @@ export function HeaderClient({
               type="button"
               aria-label="Toggle menu"
               onClick={() => setOpen((v) => !v)}
-              className="grid min-h-[44px] min-w-[44px] place-items-center rounded-md text-ink transition-colors hover:bg-ink/10 lg:hidden"
+              className="grid min-h-[44px] min-w-[44px] shrink-0 place-items-center rounded-md text-ink transition-colors hover:bg-ink/10 xl:hidden"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 {open ? (
@@ -384,7 +383,7 @@ export function HeaderClient({
 
         {/* Mobile menu */}
         {open && (
-          <nav className="max-h-[75vh] overflow-y-auto border-t border-concrete pb-4 pt-2 lg:hidden">
+          <nav className="max-h-[75vh] overflow-y-auto border-t border-concrete pb-4 pt-2 xl:hidden">
             {[...topNav.map((n) => ({ href: n.href, label: n.label, external: false }))].map((n) => (
               <Link
                 key={n.href}

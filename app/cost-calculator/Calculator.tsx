@@ -168,7 +168,7 @@ export default function CostCalculatorPage() {
           </div>
 
           <div className="lg:col-span-3">
-            <div className="relative overflow-hidden rounded-[16px] border border-white/12 bg-navy p-7 text-white shadow-[0_12px_40px_rgba(7,26,61,0.35)]">
+            <div className="relative overflow-hidden rounded-[16px] border border-white/12 bg-navy p-7 text-white shadow-[0_12px_40px_rgba(7,50,90,0.35)]">
               <div className="blueprint-grid pointer-events-none absolute inset-0 opacity-25" />
               <p className="font-label relative text-[11px] uppercase tracking-[0.16em] text-white/70">
                 Estimated range · {SCOPE_LABEL[scope]} · {size} ·{" "}
